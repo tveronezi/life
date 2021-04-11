@@ -1,7 +1,5 @@
 local Cell = require("cell")
 
-local refreshing = false
-
 local World = {
     run_simulation = false,
     cell_size = 30,
@@ -34,9 +32,6 @@ function World.update_mouse_cell(self, window_x, window_y)
 end
 
 function World.toggle_cell_at(self, window_x, window_y)
-    if refreshing then 
-        return 
-    end
     local cell_x, cell_y = self:get_cell_coords_at(window_x, window_y)
     print("toggle_cell_at -> x: ".. window_x .. "; y: " .. window_y)
     print("                  cell_x: ".. cell_x .. "; cell_y: " .. cell_y)
@@ -74,7 +69,6 @@ function World.draw(self)
         self.cell_size,
         self.cell_size
     )
-    refreshing = false
 end
 
 function World.reset(self)
