@@ -2,7 +2,6 @@
 set -e
 
 eval "$(luarocks path --bin)"
-luarocks install luaunit --local
 
 lua cell_test.lua
 lua world_test.lua
