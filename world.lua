@@ -1,4 +1,4 @@
-local Cell = require("cell")
+local Cells = require("cells")
 
 local World = {
     run_simulation = false,
@@ -7,7 +7,7 @@ local World = {
         x = 0,
         y = 0
     },
-    cells = {},
+    cells = Cells:new()
 }
 
 function World:new(o)
@@ -33,29 +33,11 @@ end
 
 function World.toggle_cell_at(self, window_x, window_y)
     local cell_x, cell_y = self:get_cell_coords_at(window_x, window_y)
-    print("toggle_cell_at -> x: ".. window_x .. "; y: " .. window_y)
-    print("                  cell_x: ".. cell_x .. "; cell_y: " .. cell_y)
-    local cell_key = cell_x .. ":" ..cell_y
-    local cell = self.cells[cell_key]
-    if cell == nil then
-        self.cells[cell_key] = Cell.new({
-            x = cell_x,
-            y = cell_y
-        }) 
-    else
-        self.cells[cell_key] = nil
-    end
-    numItems = 0
-    for k,v in pairs(self.cells) do
-        numItems = numItems + 1
-    end
-    print("total: ".. numItems)
-    print("")
-    refreshing = true
+    self.cells:toggle_cell_at(cell_x, cell_y)
 end
 
 function World.draw(self)
-    for _, cell in pairs(self.cells) do
+    for _, cell in pairs(self.cells.values) do
         love.graphics.rectangle("fill", 
             cell.x * self.cell_size, 
             cell.y * self.cell_size, 
@@ -72,7 +54,7 @@ function World.draw(self)
 end
 
 function World.reset(self)
-    self.cells = {}
+    self.cells:reset()
 end
 
 function World.toggle_simulation(self) 

@@ -2,7 +2,7 @@ local World = require("world")
 local world = World:new()
 
 function love.load()
-
+-- no-op
 end
 
 function love.update(dt)

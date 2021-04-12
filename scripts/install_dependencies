@@ -3,3 +3,4 @@ set -e
 
 eval "$(luarocks path --bin)"
 luarocks install luaunit --local
+luarocks install penlight --local
