@@ -38,18 +38,18 @@ end
 
 function World.draw(self)
     for _, cell in pairs(self.cells.values) do
-        love.graphics.rectangle("fill", 
-            cell.x * self.cell_size, 
-            cell.y * self.cell_size, 
-            self.cell_size,
-            self.cell_size
+        love.graphics.rectangle("fill",
+                cell.x * self.cell_size,
+                cell.y * self.cell_size,
+                self.cell_size,
+                self.cell_size
         )
     end
-    love.graphics.rectangle("fill", 
-        self.mouse_cell.x * self.cell_size, 
-        self.mouse_cell.y * self.cell_size, 
-        self.cell_size,
-        self.cell_size
+    love.graphics.rectangle("fill",
+            self.mouse_cell.x * self.cell_size,
+            self.mouse_cell.y * self.cell_size,
+            self.cell_size,
+            self.cell_size
     )
 end
 
@@ -57,7 +57,7 @@ function World.reset(self)
     self.cells:reset()
 end
 
-function World.toggle_simulation(self) 
+function World.toggle_simulation(self)
     self.run_simulation = not self.run_simulation
 end
 

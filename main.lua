@@ -2,13 +2,13 @@ local World = require("world")
 local world = World:new()
 
 function love.load()
--- no-op
+    -- no-op
 end
 
 function love.update(dt)
     world:update_mouse_cell(
-        love.mouse.getX(),
-        love.mouse.getY()
+            love.mouse.getX(),
+            love.mouse.getY()
     )
     world:update_simulation()
 end
