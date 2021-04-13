@@ -1,4 +1,4 @@
-local World = require("world")
+local World = require("src/world")
 local world = World:new()
 
 function love.load()
@@ -30,5 +30,4 @@ function love.keypressed(key)
         world:toggle_simulation()
         return
     end
-
 end

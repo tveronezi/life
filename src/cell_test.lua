@@ -1,5 +1,5 @@
 luaunit = require('luaunit')
-Cell = require('cell')
+Cell = require('src/cell')
 
 function testCreateCell()
     local cell = Cell:new({ x = 10, y = 11 })

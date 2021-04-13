@@ -1,5 +1,5 @@
 luaunit = require('luaunit')
-World = require('world')
+World = require('src/world')
 
 function testCreateWorld()
     local world = World:new({ cell_size = 10 })

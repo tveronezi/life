@@ -1,4 +1,4 @@
-local Cell = require("cell")
+local Cell = require("src/cell")
 
 local Cells = {
     values = {},

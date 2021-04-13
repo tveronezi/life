@@ -1,4 +1,4 @@
-local Cells = require("cells")
+local Cells = require("src/cells")
 
 local World = {
     run_simulation = false,
