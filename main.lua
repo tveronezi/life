@@ -15,8 +15,9 @@ function love.update(dt)
     )
     if love.mouse.isDown(1) then
         world:activate_cell_at(love.mouse.getX(), love.mouse.getY())
+    else
+        world:update_simulation()
     end
-    world:update_simulation()
 end
 
 function love.draw()

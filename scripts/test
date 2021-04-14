@@ -3,4 +3,6 @@ set -e
 
 eval "$(luarocks path --bin)"
 
-busted src/
+mkdir -p out
+busted --coverage src/
+luacov

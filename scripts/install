@@ -4,6 +4,7 @@ set -e
 eval "$(luarocks path --bin)"
 
 luarocks install busted --local
+luarocks install luacov --local
 luarocks install luacheck --local
 luarocks install penlight --local
 luarocks install lua-log --local

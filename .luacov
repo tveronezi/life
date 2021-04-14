@@ -1,0 +1,6 @@
+return {
+    statsfile = "out/coverage.stats.out",
+    reportfile = "out/coverage.report.out",
+    include = { 'src', 'main' },
+    exclude = { 'src/.+_spec' }
+}
