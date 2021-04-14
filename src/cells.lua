@@ -18,6 +18,26 @@ function Cells:new(max_x, max_y)
     return o
 end
 
+function Cells.update_top(self)
+    self.top_x = 0
+    self.top_y = 0
+    for _, v in pairs(self.values) do
+        self.top_x = math.max(v.x, self.top_x)
+        self.top_y = math.max(v.y, self.top_y)
+    end
+end
+
+function Cells.activate_cell_at(self, cell_x, cell_y)
+    local cell_key = cell_x .. ":" .. cell_y
+    local new_value = Cell:new({
+        x = cell_x,
+        y = cell_y
+    })
+    self.values[cell_key] = new_value
+    self:update_top()
+    log.trace("[activate] x=" .. cell_x .. ", y=" .. cell_y .. ", top_x=" .. self.top_x .. "; top_y = " .. self.top_y)
+end
+
 function Cells.toggle_cell_at(self, cell_x, cell_y)
     local cell_key = cell_x .. ":" .. cell_y
     if self.values[cell_key] == nil then
@@ -29,12 +49,7 @@ function Cells.toggle_cell_at(self, cell_x, cell_y)
     else
         self.values[cell_key] = nil
     end
-    self.top_x = 0
-    self.top_y = 0
-    for _, v in pairs(self.values) do
-        self.top_x = math.max(v.x, self.top_x)
-        self.top_y = math.max(v.y, self.top_y)
-    end
+    self:update_top()
     log.trace("[toggle] x=" .. cell_x .. ", y=" .. cell_y .. ", top_x=" .. self.top_x .. "; top_y = " .. self.top_y)
 end
 

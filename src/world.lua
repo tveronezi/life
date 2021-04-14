@@ -1,5 +1,6 @@
 local Cells = require("src/cells")
 local log = require("src/logger")
+local tablex = require("pl.tablex")
 
 local World = {
     run_simulation = false,
@@ -40,6 +41,11 @@ function World.update_mouse_cell(self, window_x, window_y)
     }
 end
 
+function World.activate_cell_at(self, window_x, window_y)
+    local cell_x, cell_y = self:get_cell_coords_at(window_x, window_y)
+    self.cells:activate_cell_at(cell_x, cell_y)
+end
+
 function World.toggle_cell_at(self, window_x, window_y)
     local cell_x, cell_y = self:get_cell_coords_at(window_x, window_y)
     self.cells:toggle_cell_at(cell_x, cell_y)
@@ -76,6 +82,9 @@ function World.update_simulation(self)
         self.cells:update()
     end
     self.simulation_step = false
+    if tablex.size(self.cells.values) == 0 then
+        self:reset()
+    end
 end
 
 return World

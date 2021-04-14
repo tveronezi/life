@@ -4,7 +4,7 @@ local world = nil
 function love.load()
     love.window.setFullscreen(true)
     local width, height = love.graphics.getDimensions()
-    local cell_size = 30
+    local cell_size = 10
     world = World:new(width, height, cell_size)
 end
 
@@ -13,6 +13,9 @@ function love.update(dt)
             love.mouse.getX(),
             love.mouse.getY()
     )
+    if love.mouse.isDown(1) then
+        world:activate_cell_at(love.mouse.getX(), love.mouse.getY())
+    end
     world:update_simulation()
 end
 
@@ -21,7 +24,10 @@ function love.draw()
 end
 
 function love.mousepressed(x, y, button, istouch)
-    world:toggle_cell_at(x, y)
+    if button == 1 then
+        world:toggle_cell_at(x, y)
+    end
+
 end
 
 function love.keypressed(key)
