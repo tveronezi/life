@@ -5,11 +5,9 @@ local tablex = require("pl.tablex")
 local Cells = {
 }
 
-function Cells:new(max_x, max_y)
+function Cells:new()
     local o = {
-        values = {},
-        max_x = max_x,
-        max_y = max_y
+        values = {}
     }
     setmetatable(o, self)
     self.__index = self
@@ -57,18 +55,18 @@ function Cells.get_neighbors(self, cell_x, cell_y)
             }
         end
     end
-    local top_left = get_cell(cell_x - 1, cell_y - 1)
+    local t_left = get_cell(cell_x - 1, cell_y - 1)
     local top = get_cell(cell_x, cell_y - 1)
-    local top_right = get_cell(cell_x + 1, cell_y - 1)
+    local t_right = get_cell(cell_x + 1, cell_y - 1)
     local left = get_cell(cell_x - 1, cell_y)
     local right = get_cell(cell_x + 1, cell_y)
-    local bottom_left = get_cell(cell_x - 1, cell_y + 1)
+    local b_left = get_cell(cell_x - 1, cell_y + 1)
     local bottom = get_cell(cell_x, cell_y + 1)
-    local bottom_right = get_cell(cell_x + 1, cell_y + 1)
-    log.trace(tostring(top_left.living) .. " | " .. tostring(top.living) .. " | " .. tostring(top_right.living))
+    local b_right = get_cell(cell_x + 1, cell_y + 1)
+    log.trace(tostring(t_left.living) .. " | " .. tostring(top.living) .. " | " .. tostring(t_right.living))
     log.trace(tostring(left.living) .. " | X | " .. tostring(right.living))
-    log.trace(tostring(bottom_left.living) .. " | " .. tostring(bottom.living) .. " | " .. tostring(bottom_right.living))
-    return {top_left, top, top_right, left, right, bottom_left, bottom, bottom_right}
+    log.trace(tostring(b_left.living) .. " | " .. tostring(bottom.living) .. " | " .. tostring(b_right.living))
+    return { t_left, top, t_right, left, right, b_left, bottom, b_right }
 end
 
 function Cells.get_next_cell_value(self, cell_x, cell_y)

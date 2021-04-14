@@ -5,14 +5,12 @@ local tablex = require("pl.tablex")
 describe("cells", function()
     it("should create cells", function()
         assert.are.same({
-            max_x = 20,
-            max_y = 30,
             values = {}
-        }, Cells:new(20, 30))
+        }, Cells:new())
     end)
 
     it("should toggle cell at", function()
-        local cells = Cells:new(20, 30)
+        local cells = Cells:new()
         cells:toggle_cell_at(1, 1)
         assert.are.same({ ["1:1"] = { x = 1, y = 1 } }, cells.values)
         cells:toggle_cell_at(1, 1)
@@ -28,7 +26,7 @@ describe("cells", function()
     end)
 
     it("should get next cell value", function()
-        local cells = Cells:new(100, 100)
+        local cells = Cells:new()
         cells:toggle_cell_at(10, 9)
         cells:toggle_cell_at(10, 10)
         cells:toggle_cell_at(10, 11)

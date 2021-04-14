@@ -1,11 +1,15 @@
 local World = require("src/world")
-local world = nil
+local world
 
 function love.load()
     love.window.setFullscreen(true)
     local width, height = love.graphics.getDimensions()
-    local cell_size = 30
+    local cell_size = 10
     world = World:new(width, height, cell_size)
+    local init_state = os.getenv("LIFE_INIT_STATE")
+    if init_state ~= nil then
+        world:load(init_state)
+    end
 end
 
 function love.update(dt)
