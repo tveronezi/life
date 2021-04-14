@@ -42,8 +42,17 @@ function World.load(self, file_name)
         return content
     end
     local lines = stringx.lines(get_content())
+    local x = 0
     for line in lines do
-        local columns
+        local columns = stringx.split(line, "\\s")
+        local y = 0
+        for column in columns do
+            if column == "1" then
+
+            end
+            y = y + 1
+        end
+        x = x + 1
     end
 
 end
