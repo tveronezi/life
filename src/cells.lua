@@ -29,7 +29,7 @@ end
 
 function Cells.toggle_cell_at(self, cell_x, cell_y)
     local cell_key = cell_x .. ":" .. cell_y
-    log.notice("toggle_cell_at(" .. cell_x .. ", " .. cell_y .. ")")
+    log.trace("toggle_cell_at(" .. cell_x .. ", " .. cell_y .. ")")
     local xs = get_column_values_or_init(self.y_to_xs, cell_y)
     if self.values[cell_key] == nil then
         local new_value = Cell:new({
@@ -51,7 +51,7 @@ function Cells.toggle_cell_at(self, cell_x, cell_y)
         self.top_x = math.max(v.x, self.top_x)
         self.top_y = math.max(v.y, self.top_y)
     end
-    log.notice("self.top_x = " .. self.top_x .. "; self.top_y = " .. self.top_y .. ".")
+    log.trace("self.top_x = " .. self.top_x .. "; self.top_y = " .. self.top_y .. ".")
 end
 
 function Cells.get_next_cell_value(self, cell_x, cell_y)
