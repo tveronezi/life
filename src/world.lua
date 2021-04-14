@@ -1,6 +1,7 @@
 local Cells = require("src/cells")
 local log = require("src/logger")
 local tablex = require("pl.tablex")
+local stringx = require("pl.stringx")
 
 local World = {
     run_simulation = false,
@@ -31,6 +32,20 @@ function World.get_cell_coords_at(self, window_x, window_y)
     local cell_x = math.floor(window_x / self.cell_size);
     local cell_y = math.floor(window_y / self.cell_size);
     return cell_x, cell_y
+end
+
+function World.load(self, file_name)
+    local get_content = function()
+        local f = assert(io.open("worlds/" .. file_name, "rb"))
+        local content = f:read("*all")
+        f:close()
+        return content
+    end
+    local lines = stringx.lines(get_content())
+    for line in lines do
+        local columns
+    end
+
 end
 
 function World.update_mouse_cell(self, window_x, window_y)

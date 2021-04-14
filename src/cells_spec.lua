@@ -7,8 +7,6 @@ describe("cells", function()
         assert.are.same({
             max_x = 20,
             max_y = 30,
-            top_x = 0,
-            top_y = 0,
             values = {}
         }, Cells:new(20, 30))
     end)
