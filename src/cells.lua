@@ -53,10 +53,22 @@ function Cells.toggle_cell_at(self, cell_x, cell_y)
     log.trace("[toggle] x=" .. cell_x .. ", y=" .. cell_y .. ", top_x=" .. self.top_x .. "; top_y = " .. self.top_y)
 end
 
-function Cells.get_next_cell_value(self, cell_x, cell_y)
-    local cell = self.values[cell_x .. ":" .. cell_y]
+function Cells.get_neighbors(self, cell_x, cell_y)
     local get_cell = function(x, y)
-        return self.values[x .. ":" .. y]
+        local result = self.values[x .. ":" .. y]
+        if result == nil then
+            return {
+                x = x,
+                y = y,
+                living = false
+            }
+        else
+            return {
+                x = x,
+                y = y,
+                living = true
+            }
+        end
     end
     local top_left = get_cell(cell_x - 1, cell_y - 1)
     local top = get_cell(cell_x, cell_y - 1)
@@ -66,15 +78,18 @@ function Cells.get_next_cell_value(self, cell_x, cell_y)
     local bottom_left = get_cell(cell_x - 1, cell_y + 1)
     local bottom = get_cell(cell_x, cell_y + 1)
     local bottom_right = get_cell(cell_x + 1, cell_y + 1)
-    local grid = {
-        top_left, top, top_right,
-        left, right,
-        bottom_left, bottom, bottom_right
-    }
-    log.trace(tostring(top_left ~= nil) .. " | " .. tostring(top ~= nil) .. " | " .. tostring(top_right ~= nil))
-    log.trace(tostring(left ~= nil) .. " | X | " .. tostring(right ~= nil))
-    log.trace(tostring(bottom_left ~= nil) .. " | " .. tostring(bottom ~= nil) .. " | " .. tostring(bottom_right ~= nil))
-    local neighbors = tablex.size(grid)
+    log.trace(tostring(top_left.living) .. " | " .. tostring(top.living) .. " | " .. tostring(top_right.living))
+    log.trace(tostring(left.living) .. " | X | " .. tostring(right.living))
+    log.trace(tostring(bottom_left.living) .. " | " .. tostring(bottom.living) .. " | " .. tostring(bottom_right.living))
+    return {top_left, top, top_right, left, right, bottom_left, bottom, bottom_right}
+end
+
+function Cells.get_next_cell_value(self, cell_x, cell_y)
+    local cell = self.values[cell_x .. ":" .. cell_y]
+    local grid = self:get_neighbors(cell_x, cell_y)
+    local neighbors = tablex.size(tablex.filter(grid, function(el)
+        return el.living
+    end))
     if cell == nil then
         if neighbors == 3 then
             return Cell:new({
@@ -93,20 +108,40 @@ function Cells.get_next_cell_value(self, cell_x, cell_y)
     end
 end
 
+function Cells.get_target_cells(self)
+    local update_table = function(the_table, neighbor)
+        local neighbor_neighbors = self:get_neighbors(neighbor.x, neighbor.y)
+        for _, n in pairs(neighbor_neighbors) do
+            the_table[n.x .. ":" .. n.y] = n
+        end
+        return the_table
+    end
+    local all_neighbors = {}
+    for _, v in pairs(self.values) do
+        all_neighbors = update_table(all_neighbors, v)
+    end
+    local all_neighbors_neighbors = {}
+    for _, v in pairs(all_neighbors) do
+        all_neighbors_neighbors = update_table(all_neighbors_neighbors, v)
+    end
+    local all_living = {}
+    for _, v in pairs(self.values) do
+        all_living[v.x .. ":" .. v.y] = {
+            x = v.x,
+            y = v.y,
+            living = true
+        }
+    end
+    return tablex.merge(all_neighbors, all_neighbors_neighbors, all_living)
+end
+
 function Cells.update(self)
     local new_values = {}
-    for i_y = 0, self.max_y - 1 do
-        for i_x = 0, self.max_x - 1 do
-            local new_key = i_x .. ":" .. i_y
-            new_values[new_key] = self:get_next_cell_value(i_x, i_y)
-        end
+    for _, v in pairs(self:get_target_cells()) do
+        local new_key = v.x .. ":" .. v.y
+        new_values[new_key] = self:get_next_cell_value(v.x, v.y)
     end
-    self.top_x = 0
-    self.top_y = 0
-    for _, v in pairs(new_values) do
-        self.top_x = math.max(v.x, self.top_x)
-        self.top_y = math.max(v.y, self.top_y)
-    end
+    self:update_top()
     self.values = new_values
 end
 

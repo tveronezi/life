@@ -4,7 +4,7 @@ local world = nil
 function love.load()
     love.window.setFullscreen(true)
     local width, height = love.graphics.getDimensions()
-    local cell_size = 10
+    local cell_size = 5
     world = World:new(width, height, cell_size)
 end
 
