@@ -1,4 +1,6 @@
 local Cells = require('src/cells')
+local Set = require("pl.Set")
+local tablex = require("pl.tablex")
 
 describe("cells", function()
     it("should create cells", function()
@@ -7,8 +9,7 @@ describe("cells", function()
             max_y = 30,
             top_x = 0,
             top_y = 0,
-            values = {},
-            y_to_xs = {}
+            values = {}
         }, Cells:new(20, 30))
     end)
 
@@ -30,11 +31,12 @@ describe("cells", function()
 
     it("should get next cell value", function()
         local cells = Cells:new(100, 100)
+        cells:toggle_cell_at(10, 9)
         cells:toggle_cell_at(10, 10)
         cells:toggle_cell_at(10, 11)
-        cells:toggle_cell_at(10, 12)
-        assert.are.same({ x = 10, y = 11 }, cells.values["10:11"])
-        assert.are.same({ x = 10, y = 11 }, cells.values["10:11"])
-        assert.are.same({ x = 10, y = 11 }, cells.values["10:11"])
+        assert.are.same(Set({"10:10", "10:11", "10:9"}), Set(tablex.keys(cells.values)))
+        assert.is.falsy(cells:get_next_cell_value(10, 9))
+        assert.is.falsy(cells:get_next_cell_value(10, 11))
+        assert.is.truthy(cells:get_next_cell_value(10, 10))
     end)
 end)

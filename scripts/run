@@ -2,4 +2,6 @@
 set -e
 
 eval "$(luarocks path --bin)"
+
+export LIFE_LOG_LEVEL=trace
 love .

@@ -3,9 +3,4 @@ set -e
 
 eval "$(luarocks path --bin)"
 
-if [ -z "$1" ]
-  then
-    busted src/
-  else
-    busted src/"$1_spec.lua"
-fi
+busted src/

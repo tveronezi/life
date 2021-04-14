@@ -2,6 +2,7 @@ local World = require("src/world")
 local world = nil
 
 function love.load()
+    love.window.setFullscreen(true)
     local width, height = love.graphics.getDimensions()
     local cell_size = 30
     world = World:new(width, height, cell_size)
@@ -29,6 +30,10 @@ function love.keypressed(key)
         return
     end
     if key == "space" then
+        world:run_simulation_step()
+        return
+    end
+    if key == "return" then
         world:toggle_simulation()
         return
     end

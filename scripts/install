@@ -2,6 +2,7 @@
 set -e
 
 eval "$(luarocks path --bin)"
+
 luarocks install busted --local
 luarocks install luacheck --local
 luarocks install penlight --local

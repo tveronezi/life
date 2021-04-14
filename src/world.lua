@@ -3,6 +3,7 @@ local log = require("src/logger")
 
 local World = {
     run_simulation = false,
+    simulation_step = false,
     cell_size = 30,
     mouse_cell = {
         x = 0,
@@ -53,16 +54,17 @@ function World.draw(self)
                 self.cell_size
         )
     end
-    love.graphics.rectangle("fill",
-            self.mouse_cell.x * self.cell_size,
-            self.mouse_cell.y * self.cell_size,
-            self.cell_size,
-            self.cell_size
-    )
 end
 
 function World.reset(self)
+    self.run_simulation = false
+    self.simulation_step = false
     self.cells:reset()
+
+end
+
+function World.run_simulation_step(self)
+    self.simulation_step = true
 end
 
 function World.toggle_simulation(self)
@@ -70,9 +72,10 @@ function World.toggle_simulation(self)
 end
 
 function World.update_simulation(self)
-    if self.run_simulation then
+    if self.simulation_step or self.run_simulation then
         self.cells:update()
     end
+    self.simulation_step = false
 end
 
 return World
