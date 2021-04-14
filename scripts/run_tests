@@ -1,7 +1,0 @@
-#!/bin/bash
-set -e
-
-eval "$(luarocks path --bin)"
-
-lua cell_test.lua
-lua world_test.lua

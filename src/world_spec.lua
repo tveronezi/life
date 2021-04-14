@@ -1,0 +1,30 @@
+local World = require('src/world')
+
+describe("world", function()
+    it("should create a world", function()
+        assert.are.same(World:new(800, 600, 10).cells, {
+            max_x = 80,
+            max_y = 60,
+            top_x = 0,
+            top_y = 0,
+            values = {},
+            y_to_xs = {}
+        })
+        assert.are.same(World:new(800, 600, 12).cells, {
+            max_x = 66,
+            max_y = 50,
+            top_x = 0,
+            top_y = 0,
+            values = {},
+            y_to_xs = {}
+        })
+        assert.are.same(World:new(1200, 800, 20).cells, {
+            max_x = 60,
+            max_y = 40,
+            top_x = 0,
+            top_y = 0,
+            values = {},
+            y_to_xs = {}
+        })
+    end)
+end)

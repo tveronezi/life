@@ -1,0 +1,15 @@
+local Cell = require('src/cell')
+
+describe("cell", function()
+    it("should create a cell", function()
+        local cell = Cell:new({ x = 10, y = 11 })
+        assert.are.equals(10, cell.x)
+        assert.are.equals(11, cell.y)
+    end)
+
+    it("should create an empty cell", function()
+        local cell = Cell:new()
+        assert.are.equals(0, cell.x)
+        assert.are.equals(0, cell.y)
+    end)
+end)

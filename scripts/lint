@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+eval "$(luarocks path --bin)"
+
+luacheck src main.lua \
+  --no-unused-args \
+  --globals love \
+  --globals describe \
+  --globals it \
+  --globals assert
+

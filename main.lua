@@ -1,8 +1,10 @@
 local World = require("src/world")
-local world = World:new()
+local world = nil
 
 function love.load()
-    -- no-op
+    local width, height = love.graphics.getDimensions()
+    local cell_size = 30
+    world = World:new(width, height, cell_size)
 end
 
 function love.update(dt)

@@ -1,4 +1,5 @@
 local Cells = require("src/cells")
+local log = require("src/logger")
 
 local World = {
     run_simulation = false,
@@ -7,13 +8,20 @@ local World = {
         x = 0,
         y = 0
     },
-    cells = Cells:new()
+    cells = nil
 }
 
-function World:new(o)
-    o = o or {}
+function World:new(window_width, window_height, cell_size)
+    local o = {}
     setmetatable(o, self)
     self.__index = self
+    o.cell_size = cell_size
+    local max_x = math.floor(window_width / cell_size)
+    local max_y = math.floor(window_height / cell_size)
+    log.notice("max_x = " .. max_x .. "; window_width = " .. window_width .. "; ")
+    log.notice("max_y = " .. max_y .. "; window_height = " .. window_height .. "; ")
+    log.notice("cell_size = " .. cell_size .. ";")
+    o.cells = Cells:new(max_x, max_y)
     return o
 end
 
@@ -62,7 +70,9 @@ function World.toggle_simulation(self)
 end
 
 function World.update_simulation(self)
-
+    if self.run_simulation then
+        self.cells:update()
+    end
 end
 
 return World
