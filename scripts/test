@@ -4,5 +4,7 @@ set -e
 eval "$(luarocks path --bin)"
 
 mkdir -p out
+rm -f out/coverage.report.out
+rm -f out/coverage.stats.out
 busted --coverage src/
 luacov

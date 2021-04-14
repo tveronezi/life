@@ -5,26 +5,13 @@ local tablex = require("pl.tablex")
 local Cells = {
 }
 
-function Cells:new(max_x, max_y)
+function Cells:new()
     local o = {
-        values = {},
-        top_x = 0,
-        top_y = 0,
-        max_x = max_x,
-        max_y = max_y
+        values = {}
     }
     setmetatable(o, self)
     self.__index = self
     return o
-end
-
-function Cells.update_top(self)
-    self.top_x = 0
-    self.top_y = 0
-    for _, v in pairs(self.values) do
-        self.top_x = math.max(v.x, self.top_x)
-        self.top_y = math.max(v.y, self.top_y)
-    end
 end
 
 function Cells.activate_cell_at(self, cell_x, cell_y)
@@ -34,8 +21,7 @@ function Cells.activate_cell_at(self, cell_x, cell_y)
         y = cell_y
     })
     self.values[cell_key] = new_value
-    self:update_top()
-    log.trace("[activate] x=" .. cell_x .. ", y=" .. cell_y .. ", top_x=" .. self.top_x .. "; top_y = " .. self.top_y)
+    log.trace("[activate] x=" .. cell_x .. ", y=" .. cell_y .. ";")
 end
 
 function Cells.toggle_cell_at(self, cell_x, cell_y)
@@ -49,8 +35,7 @@ function Cells.toggle_cell_at(self, cell_x, cell_y)
     else
         self.values[cell_key] = nil
     end
-    self:update_top()
-    log.trace("[toggle] x=" .. cell_x .. ", y=" .. cell_y .. ", top_x=" .. self.top_x .. "; top_y = " .. self.top_y)
+    log.trace("[toggle] x=" .. cell_x .. ", y=" .. cell_y .. ";")
 end
 
 function Cells.get_neighbors(self, cell_x, cell_y)
@@ -70,18 +55,18 @@ function Cells.get_neighbors(self, cell_x, cell_y)
             }
         end
     end
-    local top_left = get_cell(cell_x - 1, cell_y - 1)
+    local t_left = get_cell(cell_x - 1, cell_y - 1)
     local top = get_cell(cell_x, cell_y - 1)
-    local top_right = get_cell(cell_x + 1, cell_y - 1)
+    local t_right = get_cell(cell_x + 1, cell_y - 1)
     local left = get_cell(cell_x - 1, cell_y)
     local right = get_cell(cell_x + 1, cell_y)
-    local bottom_left = get_cell(cell_x - 1, cell_y + 1)
+    local b_left = get_cell(cell_x - 1, cell_y + 1)
     local bottom = get_cell(cell_x, cell_y + 1)
-    local bottom_right = get_cell(cell_x + 1, cell_y + 1)
-    log.trace(tostring(top_left.living) .. " | " .. tostring(top.living) .. " | " .. tostring(top_right.living))
+    local b_right = get_cell(cell_x + 1, cell_y + 1)
+    log.trace(tostring(t_left.living) .. " | " .. tostring(top.living) .. " | " .. tostring(t_right.living))
     log.trace(tostring(left.living) .. " | X | " .. tostring(right.living))
-    log.trace(tostring(bottom_left.living) .. " | " .. tostring(bottom.living) .. " | " .. tostring(bottom_right.living))
-    return {top_left, top, top_right, left, right, bottom_left, bottom, bottom_right}
+    log.trace(tostring(b_left.living) .. " | " .. tostring(bottom.living) .. " | " .. tostring(b_right.living))
+    return { t_left, top, t_right, left, right, b_left, bottom, b_right }
 end
 
 function Cells.get_next_cell_value(self, cell_x, cell_y)
@@ -141,15 +126,12 @@ function Cells.update(self)
         local new_key = v.x .. ":" .. v.y
         new_values[new_key] = self:get_next_cell_value(v.x, v.y)
     end
-    self:update_top()
     self.values = new_values
 end
 
 function Cells.reset(self)
     self.values = {}
     self.x_to_ys = {}
-    self.top_x = 0
-    self.top_y = 0
 end
 
 return Cells
