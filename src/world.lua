@@ -3,6 +3,7 @@ local log = require("src/logger")
 local tablex = require("pl.tablex")
 local stringx = require("pl.stringx")
 local List = require("pl.List")
+local config = require("src/config")
 
 local World = {
     run_simulation = false,
@@ -15,7 +16,7 @@ local World = {
         y = 0
     },
     cells = nil,
-    init_state = nil
+    on_screen_points = 0
 }
 
 function World:new(window_width, window_height, cell_size)
@@ -99,23 +100,28 @@ function World.toggle_cell_at(self, window_x, window_y)
 end
 
 function World.draw(self)
+    local on_screen_points = 0
     for _, cell in pairs(self.cells.values) do
-        love.graphics.rectangle("fill",
-                cell.x * self.cell_size,
-                cell.y * self.cell_size,
-                self.cell_size,
-                self.cell_size
-        )
+        if cell.x < self.max_x and cell.y < self.max_y then
+            love.graphics.rectangle("fill",
+                    cell.x * self.cell_size,
+                    cell.y * self.cell_size,
+                    self.cell_size,
+                    self.cell_size
+            )
+            on_screen_points = on_screen_points + 1
+        end
     end
+    self.on_screen_points = on_screen_points
 end
 
 function World.reset(self)
+    self.on_screen_points = 0
     self.run_simulation = false
     self.simulation_step = false
     self.cells:reset()
-    if self.init_state ~= nil then
-        self:load(self.init_state)
-    end
+    self:load(config.init_state)
+    self:draw()
 end
 
 function World.run_simulation_step(self)
@@ -134,6 +140,10 @@ function World.update_simulation(self)
     if tablex.size(self.cells.values) == 0 then
         self:reset()
     end
+end
+
+function World.get_info(self)
+    return "points: " .. tablex.size(self.cells.values) .. ";\n" .. "on_screen_points: " .. self.on_screen_points
 end
 
 return World

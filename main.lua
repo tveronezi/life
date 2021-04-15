@@ -23,6 +23,8 @@ end
 
 function love.draw()
     world:draw()
+    local text = world:get_info() .. "\n" .. "fps: " .. love.timer.getFPS()
+    love.graphics.print(text)
 end
 
 function love.mousepressed(x, y, button, istouch)
