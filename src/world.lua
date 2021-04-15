@@ -55,7 +55,7 @@ function World.load(self, file_name)
         for line in lines do
             local x = 0
             for column in line:gmatch(".") do
-                if column ~= " " then
+                if column ~= " " and column ~= "-" then
                     cells:append({ x = x, y = y })
                 end
                 x = x + 1

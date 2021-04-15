@@ -9,6 +9,6 @@ end
 return {
     -- https://github.com/moteus/lua-log/blob/master/doc/doc.md
     log_level = getenv_or("LIFE_LOG_LEVEL", "info"),
-    cell_size = tonumber(getenv_or("LIFE_CELL_SIZE", "30")),
-    init_state = getenv_or("LIFE_INIT_STATE", "simple")
+    cell_size = tonumber(getenv_or("LIFE_CELL_SIZE", "10")),
+    init_state = getenv_or("LIFE_INIT_STATE", "glider_gun")
 }
